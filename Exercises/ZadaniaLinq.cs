@@ -99,6 +99,8 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie05_CzyIstniejeNieaktywneZapisanie()
     {
+        bool czyIstnieje = DaneUczelni.Zapisy.Any(z => z.CzyAktywny == false);
+        return new List<string> {czyIstnieje ? "Tak": "Nie"};
         throw Niezaimplementowano(nameof(Zadanie05_CzyIstniejeNieaktywneZapisanie));
     }
 
@@ -114,6 +116,9 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie06_CzyWszyscyProwadzacyMajaKatedre()
     {
+        bool czyWszyscy = DaneUczelni.Prowadzacy
+        .All( p=>!string.IsNullOrWhiteSpace(p.Katedra));
+        return new List<string> {czyWszyscy ? "Tak" : "Nie"};
         throw Niezaimplementowano(nameof(Zadanie06_CzyWszyscyProwadzacyMajaKatedre));
     }
 
@@ -128,6 +133,8 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie07_LiczbaAktywnychZapisow()
     {
+        var count = DaneUczelni.Zapisy.Count(z => z.CzyAktywny);
+        return new List<string> {$"Liczba aktywnych zapisów: {count}"};
         throw Niezaimplementowano(nameof(Zadanie07_LiczbaAktywnychZapisow));
     }
 
@@ -142,6 +149,11 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie08_UnikalneMiastaStudentow()
     {
+        return DaneUczelni.Studenci
+        .Select(s=> s.Miasto)
+        .Distinct()
+        .OrderBy(m => m)
+        .ToList();
         throw Niezaimplementowano(nameof(Zadanie08_UnikalneMiastaStudentow));
     }
 
@@ -157,6 +169,11 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie09_TrzyNajnowszeZapisy()
     {
+        return DaneUczelni.Zapisy
+        .OrderByDescending(z => z.DataZapisu)
+        .Take(3)
+        .Select(z => $"Data: {z.DataZapisu:yyyy-MM-dd}, Id Studenta: {z.StudentId}, Id Przedmiotu: {z.PrzedmiotId} ")
+        .ToList();
         throw Niezaimplementowano(nameof(Zadanie09_TrzyNajnowszeZapisy));
     }
 
@@ -173,6 +190,12 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie10_DrugaStronaPrzedmiotow()
     {
+        return DaneUczelni.Przedmioty
+        .OrderBy(p => p.Nazwa)
+        .Skip(2)
+        .Take(2)
+        .Select(p => $"{p.Nazwa}  {p.Kategoria}")
+        .ToList();
         throw Niezaimplementowano(nameof(Zadanie10_DrugaStronaPrzedmiotow));
     }
 
